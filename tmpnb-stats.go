@@ -115,7 +115,7 @@ func main() {
 	}
 
 	avail := tmpnb.percentAvailable()
-	log.Printf("%v availability %v%%", tmpnb.StatsEndpoint, avail)
+	log.Printf("Initial %v availability %v%%", tmpnb.StatsEndpoint, avail)
 	statusPage.report(avail)
 
 	ticker := time.NewTicker(time.Second * tmpnb.Period)
