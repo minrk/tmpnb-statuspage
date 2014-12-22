@@ -40,12 +40,9 @@ func (s StatusPage) report(v float64) {
 	data := Data{MR: MetricReport{Timestamp: t.Unix(), Value: v}}
 	b, err := json.Marshal(data)
 
-	log.Println(string(b))
-
 	client := &http.Client{}
 
 	metricEndpoint := "https://api.statuspage.io/v1/pages/" + s.PageID + "/metrics/" + s.TmpnbMetricID + "/data.json"
-	log.Println(metricEndpoint)
 
 	req, err := http.NewRequest("POST", metricEndpoint, bytes.NewBuffer(b))
 
@@ -59,12 +56,11 @@ func (s StatusPage) report(v float64) {
 
 	resp, err := client.Do(req)
 
-	log.Printf("Response status: %v\n", resp.Status)
-	body, _ := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalf("Unable to send metric to statuspage.io: %v\n", err)
+	}
 
-	log.Printf("Response body: %v\n", string(body))
-
-	//defer resp.Body.Close()
+	defer resp.Body.Close()
 
 }
 
