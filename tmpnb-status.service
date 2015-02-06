@@ -1,0 +1,25 @@
+[Unit]
+Description=tmpnb Status Reporting
+
+Requires=docker.service
+Requires=etcd.service
+
+After=docker.service
+After=etcd.service
+
+[Service]
+User=core
+
+Restart=always
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill tmpnb-status
+ExecStartPre=-/usr/bin/docker rm tmpnb-status
+ExecStartPre=/usr/bin/docker pull rgbkrk/tmpnb-statuspage
+ExecStart=/usr/bin/docker run --name tmpnb-status \
+             -e STATUS_PAGE_API_KEY=<> \
+             -e STATUS_PAGE_PAGE_ID=fzcq6v7wcg65 \
+             -e STATUS_PAGE_TMPNB_METRIC_ID=9js6q92b8ltx \
+             -e TMPNB_STATS_ENDPOINT=https://tmpnb.org/stats \
+             -e TMPNB_STATS_PERIOD=60 \
+             rgbkrk/tmpnb-statuspage
+ExecStop=/usr/bin/docker stop tmpnb-status
