@@ -23,3 +23,6 @@ ExecStart=/usr/bin/docker run --name nature-status \
              -e TMPNB_STATS_PERIOD=60 \
              rgbkrk/tmpnb-statuspage
 ExecStop=/usr/bin/docker stop nature-status
+
+[X-Fleet]
+Global=true
