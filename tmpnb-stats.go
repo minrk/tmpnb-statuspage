@@ -99,6 +99,9 @@ func (t TmpnbStats) usage() Usage {
 
 func (t TmpnbStats) percentAvailable() float64 {
 	usage := t.usage()
+	if usage.Capacity == 0 {
+		return 0.0
+	}
 	return (float64(usage.Available) * 100) / float64(usage.Capacity)
 }
 
